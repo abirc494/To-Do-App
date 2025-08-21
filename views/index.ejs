@@ -1,0 +1,48 @@
+<% layout("layouts/boilerplate") %>
+    <form action="/logout" method="GET" class="mb-3 d-flex justify-content-end">
+        <button class="btn btn-primary">Logout</button>
+    </form>
+
+    <h1 class="text-center mb-4">My To-Do List</h1>
+
+    <form action="/index" method="POST" class="mb-3 d-flex">
+        <input type="text" name="title" class="form-control me-2" placeholder="Add new task" required>
+        <button class="btn btn-primary">Add</button>
+    </form>
+
+    <div class="task">
+        <ol class="list-group list-group-numbered">
+            <% for (task of tasks) { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <!-- Task Name (left side) -->
+                    <span class="fw-semibold" style="margin-left: 0;">
+                        <%= task.title %>
+                    </span>
+
+                    <!-- Buttons-->
+                    <div>
+                        <!-- complete & incomplete button -->
+                        <form class="d-inline" method="POST" action="/index/<%= task._id %>?_method=PATCH">
+                            <% if(!task.completed){ %>
+                                <button type="submit" class="btn btn-sm btn-danger me-2">Incomplete</button>
+                                <% }else{ %>
+                                    <button type="submit" class="btn btn-sm btn-success me-2">Complete</button>
+                                    <% } %>
+                        </form>
+
+                        <!-- Edit button -->
+                        <% if(!task.completed){ %>
+                            <form method="GET" action="/index/<%= task._id %>/edit" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-warning me-2">Edit</button>
+                            </form>
+                            <% } %>
+
+                                <!-- Delete button -->
+                                <form method="POST" action="/index/<%= task._id %>?_method=DELETE" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                    </div>
+                </li>
+                <% } %>
+        </ol>
+    </div>
