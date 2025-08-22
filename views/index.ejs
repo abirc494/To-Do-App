@@ -1,48 +1,90 @@
 <% layout("layouts/boilerplate") %>
-    <form action="/logout" method="GET" class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary">Logout</button>
-    </form>
 
-    <h1 class="text-center mb-4">My To-Do List</h1>
+<div class="container mt-5">
+    <!-- Header Row: Username Left + Title Center + Logout Button Right -->
+    <div class="d-flex justify-content-center align-items-center position-relative mb-5">
+        <!-- Username Left Side -->
+        <div class="position-absolute start-0">
+            <p class="fw-bold mb-0" style="font-size: 1rem;">
+                Hi, <%= user.username %>
+            </p>
+        </div>
 
-    <form action="/index" method="POST" class="mb-3 d-flex">
-        <input type="text" name="title" class="form-control me-2" placeholder="Add new task" required>
-        <button class="btn btn-primary">Add</button>
-    </form>
+        <!-- Title Center -->
+        <h1 class="mb-0">My To-Do List</h1>
 
-    <div class="task">
-        <ol class="list-group list-group-numbered">
-            <% for (task of tasks) { %>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <!-- Task Name (left side) -->
-                    <span class="fw-semibold" style="margin-left: 0;">
-                        <%= task.title %>
-                    </span>
+        <!-- Logout Button Right Side -->
+        <div class="position-absolute end-0">
+            <form action="/logout" method="GET">
+                <button class="btn btn-primary">Logout</button>
+            </form>
+        </div>
+    </div>
 
-                    <!-- Buttons-->
-                    <div>
-                        <!-- complete & incomplete button -->
-                        <form class="d-inline" method="POST" action="/index/<%= task._id %>?_method=PATCH">
-                            <% if(!task.completed){ %>
-                                <button type="submit" class="btn btn-sm btn-danger me-2">Incomplete</button>
-                                <% }else{ %>
-                                    <button type="submit" class="btn btn-sm btn-success me-2">Complete</button>
+    <div class="row">
+        <!-- Left side (To-do List) -->
+        <div class="col-md-6 border-end pe-4">
+            <!-- Add New Task -->
+            <form action="/index" method="POST" class="mb-3 d-flex">
+                <input type="text" name="title" class="form-control me-2" placeholder="Add new task" required>
+                <button class="btn btn-primary">Add</button>
+            </form>
+
+            <!-- Task List -->
+            <div class="task">
+                <ol class="list-group list-group-numbered">
+                    <% for (task of tasks) { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <!-- Task Name -->
+                            <span class="fw-semibold"><%= task.title %></span>
+
+                            <!-- Buttons -->
+                            <div>
+                                <!-- complete & incomplete button -->
+                                <form class="d-inline" method="POST" action="/index/<%= task._id %>?_method=PATCH">
+                                    <% if(!task.completed){ %>
+                                        <button type="submit" class="btn btn-sm btn-danger me-2">Incomplete</button>
+                                    <% } else { %>
+                                        <button type="submit" class="btn btn-sm btn-success me-2">Complete</button>
                                     <% } %>
-                        </form>
+                                </form>
 
-                        <!-- Edit button -->
-                        <% if(!task.completed){ %>
-                            <form method="GET" action="/index/<%= task._id %>/edit" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-warning me-2">Edit</button>
-                            </form>
-                            <% } %>
+                                <!-- Edit button -->
+                                <% if(!task.completed){ %>
+                                    <form method="GET" action="/index/<%= task._id %>/edit" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-warning me-2">Edit</button>
+                                    </form>
+                                <% } %>
 
                                 <!-- Delete button -->
                                 <form method="POST" action="/index/<%= task._id %>?_method=DELETE" class="d-inline">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
-                    </div>
-                </li>
-                <% } %>
-        </ol>
+                            </div>
+                        </li>
+                    <% } %>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Right side (Assign Task Form - sticky/static) -->
+        <div class="col-md-6 d-flex justify-content-center">
+            <div class="position-sticky" style="top: 100px; height: fit-content; min-width: 350px;">
+                <div class="card shadow p-4">
+                    <h3 class="text-center mb-3">Assign Task</h3>
+                    <form action="/assign" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Task Name</label>
+                            <input type="text" name="task" class="form-control" placeholder="Enter task" required>
+                        </div>
+                        <button class="btn btn-success w-100">Assign</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>

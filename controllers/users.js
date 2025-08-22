@@ -1,12 +1,12 @@
 
 
-module.exports.singUpFormRender = () => {
+module.exports.singUpFormRender =
     (req, res) => {
         res.render("login/singup.ejs")
     }
-};
 
-module.exports.newUserCreated = () => {
+
+module.exports.newUserCreated =
     async (req, res) => {
         try {
             let { username, email, password } = req.body;
@@ -23,21 +23,21 @@ module.exports.newUserCreated = () => {
             res.redirect("/singup")
         }
     }
-}
 
-module.exports.logInFormRendering = ()=>{
+
+module.exports.logInFormRendering =
     (req, res) => {
     res.render("login/login.ejs")
 }
-};
 
-module.exports.logInAuthenticator = ()=>{
+
+module.exports.logInAuthenticator =
     (req, res) => {
         res.redirect("/index")
     }
-};
 
-module.exports.logOutFunction = ()=>{
+
+module.exports.logOutFunction =
     (req, res) => {
     req.logOut((err) => {
         if (err) {
@@ -46,5 +46,4 @@ module.exports.logOutFunction = ()=>{
             res.redirect("/login")
         }
     })
-}
 }
