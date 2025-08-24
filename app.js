@@ -11,6 +11,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/users");
 const taskRoute = require("./routers/tasks.js")
 const userRoute = require("./routers/users.js")
+const assignRoute = require("./routers/assignTask.js");
 
 
 
@@ -72,6 +73,8 @@ app.use("/index",taskRoute )
 
 // singup function
 app.use("/",userRoute)
+
+app.use("/assign", assignRoute);
 
 
 // middleware

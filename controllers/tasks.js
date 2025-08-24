@@ -1,14 +1,15 @@
 const Task = require("../models/tasks");
 const User = require("../models/users")
+const Assigntask = require("../models/assingtask");
 
 module.exports.allTasks = 
     async (req, res) => {
         let userId = req.user._id
         const user = await User.findById(userId, 'username');
-        // console.log(user);
+        const taskReceiver = await Assigntask.find({taskReceiver:userId})
+        console.log(taskReceiver); 
         const tasks = await Task.find({user:req.user._id})
-        
-        res.render("index.ejs", { tasks, user })
+        res.render("index.ejs", { tasks, user, taskReceiver })
     }
 
 

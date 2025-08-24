@@ -9,7 +9,19 @@ const userSchema = new Schema({
     email:{
         type: String,
         required: true
-    }
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now
+    },
+    taskGiven:[{
+        type: Schema.ObjectId,
+        ref:"Assigntask"
+    }],
+    taskReceiver:[{
+        type: Schema.ObjectId,
+        ref:"Assigntask"
+    }]
 })
 
 userSchema.plugin(passportLocalMongoose);

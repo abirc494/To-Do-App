@@ -32,6 +32,13 @@
 
             <!-- Task List -->
             <div class="task">
+                <div class="assign_task">
+                    <ol>
+                        <% for(assignTask of taskReceiver){ %>
+                            <li><%= assignTask.title %></li>
+                            <% } %>
+                    </ol>
+                </div>
                 <ol class="list-group list-group-numbered">
                     <% for (task of tasks) { %>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -79,7 +86,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Task Name</label>
-                            <input type="text" name="task" class="form-control" placeholder="Enter task" required>
+                            <input type="text" name="title" class="form-control" placeholder="Enter task" required>
                         </div>
                         <button class="btn btn-success w-100">Assign</button>
                     </form>
