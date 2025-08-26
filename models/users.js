@@ -14,14 +14,14 @@ const userSchema = new Schema({
         type:Date,
         default:Date.now
     },
-    taskGiven:[{
+    taskGiven:{
         type: Schema.ObjectId,
         ref:"Assigntask"
-    }],
-    taskReceiver:[{
+    },
+    taskReceiver:{
         type: Schema.ObjectId,
         ref:"Assigntask"
-    }]
+    }
 })
 
 userSchema.plugin(passportLocalMongoose);

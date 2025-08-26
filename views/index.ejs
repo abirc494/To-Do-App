@@ -35,7 +35,9 @@
                 <div class="assign_task">
                     <ol>
                         <% for(assignTask of taskReceiver){ %>
-                            <li><%= assignTask.title %></li>
+                            
+                            <li><%= assignTask.title  %> and <%= assignTask.taskGiver.username %></li>
+                         
                             <% } %>
                     </ol>
                 </div>

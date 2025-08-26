@@ -7,9 +7,9 @@ module.exports.allTasks =
         let userId = req.user._id
         const user = await User.findById(userId, 'username');
         const taskReceiver = await Assigntask.find({taskReceiver:userId})
-        console.log(taskReceiver); 
+        .populate("taskGiver", "username")
         const tasks = await Task.find({user:req.user._id})
-        res.render("index.ejs", { tasks, user, taskReceiver })
+        res.render("index.ejs", {tasks, user, taskReceiver})
     }
 
 
