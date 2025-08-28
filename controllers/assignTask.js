@@ -13,3 +13,23 @@ module.exports.saveAssignTask = async(req,res)=>{
     await newAssignTask.save();
     res.redirect("/index");
 }
+
+module.exports.completeTask = async(req,res)=>{
+    let {id} = req.params;
+    let complete = await Assigntask.findByIdAndUpdate(id, { completed: true });
+    complete.save();
+    res.redirect("/index")
+}
+
+module.exports.editAssignTask = async(req,res)=>{
+    let {id} = req.params;
+    let taskInfo = await Assigntask.findById(id)
+    res.render("assignTaskEdit.ejs", {taskInfo})
+};
+
+module.exports.editAssignTaskSave = async (req,res) => {
+    let {id} = req.params;
+    let {title} = req.body;
+    let newTitle = await Assigntask.findByIdAndUpdate(id,{title:title})
+    res.redirect("/index")
+}

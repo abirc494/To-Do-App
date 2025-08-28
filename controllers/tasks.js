@@ -8,8 +8,9 @@ module.exports.allTasks =
         const user = await User.findById(userId, 'username');
         const taskReceiver = await Assigntask.find({taskReceiver:userId})
         .populate("taskGiver", "username")
-        const tasks = await Task.find({user:req.user._id})
-        res.render("index.ejs", {tasks, user, taskReceiver})
+        const tasks = await Task.find({user:req.user._id});
+        const delegatedTasks = await Assigntask.find({taskGiver:userId}).populate("taskReceiver", "username")
+        res.render("index.ejs", {tasks, user, taskReceiver, delegatedTasks})
     }
 
 
@@ -29,6 +30,7 @@ module.exports.saveTasks =
 module.exports.editTask = 
     async (req, res) => {
     let { id } = req.params;
+    
     let task = await Task.findById(id)
     res.render("edit.ejs", { task })
 };
@@ -36,9 +38,10 @@ module.exports.editTask =
 module.exports.saveEditTask = 
     async (req, res) => {
     let { id } = req.params;
+    
     let editTask = req.body;
     let newTask = await Task.findByIdAndUpdate(id, { title: editTask.title });
-    newTask.save()
+    // newTask.save()
     res.redirect("/index")
 }
 
@@ -47,7 +50,7 @@ module.exports.completeFunction =
     async (req, res) => {
     let { id } = req.params;
     let complete = await Task.findByIdAndUpdate(id, { completed: true });
-    complete.save();
+    // complete.save();
     res.redirect("/index")
 }
 

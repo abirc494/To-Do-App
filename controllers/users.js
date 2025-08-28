@@ -1,5 +1,4 @@
-
-
+const User = require("../models/users")
 module.exports.singUpFormRender =
     (req, res) => {
         res.render("login/singup.ejs")
