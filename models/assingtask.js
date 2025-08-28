@@ -18,6 +18,10 @@ const assignTaskSchema = new Schema({
     taskReceiver:{
         type: Schema.ObjectId,
         ref: "User"
+    },
+    hiddenForReceiver:{
+        type: Boolean, 
+        default: false
     }
 
 });

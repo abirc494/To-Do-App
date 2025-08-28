@@ -1,6 +1,7 @@
 const Assigntask = require("../models/assingtask");
 const User = require("../models/users");
 
+
 module.exports.saveAssignTask = async(req,res)=>{
     let {username, title} = req.body;
     let curentUserId = req.user._id
@@ -31,5 +32,20 @@ module.exports.editAssignTaskSave = async (req,res) => {
     let {id} = req.params;
     let {title} = req.body;
     let newTitle = await Assigntask.findByIdAndUpdate(id,{title:title})
+    res.redirect("/index")
+}
+
+module.exports.deleteAssigningTask = async (req,res) => {
+    let {id} = req.params;
+    let deleteTaskReceiverId = await Assigntask.findByIdAndUpdate(id,{hiddenForReceiver:true})
+    console.log("deleted id: "+deleteTaskReceiverId);
+    res.redirect("/index")
+    
+}
+
+module.exports.deleteAssignedTask = async (req,res) => {
+    let {id} = req.params;
+    let deletedItem = await Assigntask.findOneAndDelete(id);
+    console.log(deletedItem);
     res.redirect("/index")
 }

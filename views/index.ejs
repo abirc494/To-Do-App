@@ -37,16 +37,19 @@
                         <ol class="list-group list-group-numbered">
                             <% for (let assignTask of taskReceiver) { %>
                                 <li class="list-group-item d-flex justify-content-between align-items-center text-end">
-                                    <% if(!assignTask.completed){ %>
+                                    <% if(!assignTask.completed && !assignTask.hiddenForReceiver){ %>
+    
                                         <span class="fw-semibold">
                                             <%= assignTask.title %>. ref by: <%= assignTask.taskGiver.username %>
                                         </span>
                                         <% } else { %>
+                                            <% if(!assignTask.hiddenForReceiver) {%>
                                             <span class="fw-semibold">
                                                 <del>
                                                     <%= assignTask.title %>
                                                 </del> ref by: <%= assignTask.taskGiver.username %>
                                             </span>
+                                            <% } %>
                                             <% } %>
 
                                                 <form method="POST"
@@ -55,10 +58,19 @@
                                                         <button type="submit"
                                                             class="btn btn-sm btn-danger me-2">Incomplete</button>
                                                         <% } else { %>
+                                                            <% if(!assignTask.hiddenForReceiver) {%>
                                                             <button type="submit"
                                                                 class="btn btn-sm btn-success me-2">Completed</button>
+                                                               <% } %>
                                                             <% } %>
                                                 </form>
+                                                <% if(assignTask.completed && !assignTask.hiddenForReceiver) {%>
+                                                <form method="POST"
+                                                    action="/assign/<%= assignTask._id %>?_method=DELETE">
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                                <% } %>
+
                                 </li>
                                 <% } %>
                         </ol>
@@ -165,7 +177,11 @@
                                                         <% } else{ %>
                                                             <button type="submit"
                                                                 class="btn btn-sm btn-success me-2">Completed</button>
+                                                               
                                                             <% } %>
+                                                             <form method="POST" action="/assign/<%=delegatedTask._id%>/delete?_method=DELETE">
+                                                                    <button type="submit"  class="btn btn-sm btn-danger">Delete</button>
+                                                                </form>
 
                                     </li>
                                     <% } %>
