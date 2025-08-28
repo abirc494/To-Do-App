@@ -1,1 +1,76 @@
 
+/* ==================== Scrollable Lists ==================== */
+/* Assigning Task & Personal Task - scroll যদি 4-5 এর বেশি হয় */
+.assign_task ol,
+.task ol {
+  max-height: 220px;   /* ৪-৫ টা আইটেম এর সমান */
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Delegated Task - scroll যদি ৩ এর বেশি হয় */
+.delegated_task ol {
+  max-height: 160px;   /* ৩ টা আইটেম এর সমান */
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* ==================== Sticky Assign Form ==================== */
+.position-sticky {
+  position: sticky !important;
+  top: 100px;
+}
+
+/* ==================== Assign Form Compact ==================== */
+.position-sticky .card {
+  padding: 2rem 1rem; /* কম padding */
+  min-width: 250px;   /* ছোট form width */
+  max-width: 100%;
+}
+
+.position-sticky .card input,
+.position-sticky .card button {
+  font-size: 0.9rem;  /* ইনপুট ও বাটন ছোট */
+  padding: 0.4rem 0.6rem;
+}
+
+/* ==================== Button Transitions ==================== */
+/* Personal Task - incomplete থেকে complete এ smooth transition */
+.task .list-group-item form button {
+  transition: all 0.4s ease-in-out;
+}
+.task .list-group-item .btn-danger:hover,
+.task .list-group-item .btn-success:hover {
+  transform: scale(1.05);
+}
+
+/* Assigning Task - completed + delete button distance এবং transition */
+.assign_task .list-group-item form {
+  display: inline-block;
+  transition: margin 0.5s ease-in-out;
+}
+.assign_task .list-group-item form + form {
+  margin-left: 40px;   /* complete & delete button এর মাঝে gap */
+}
+
+/* ==================== LI Spacing ==================== */
+/* 1. Assigning Task LI গুলোর spacing */
+.assign_task ol li {
+  margin-bottom: 10px;
+}
+
+/* 2. Personal Task LI গুলোর spacing */
+.task ol li {
+  margin-bottom: 10px;
+}
+
+/* 3. Assigning Task থেকে Personal Task heading/p পর্যন্ত gap */
+.task .task:first-of-type {
+  margin-top: 20px;
+}
+
+/* 4. Assign Task থেকে Delegated Task heading/p পর্যন্ত gap */
+.delegated_task {
+  margin-top: 20px;
+}
+

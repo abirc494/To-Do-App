@@ -22,6 +22,7 @@ module.exports.saveTasks =
             user: req.user._id
         })
         await newTask.save()
+        req.flash("success", `Successfully task added.`);
         res.redirect("/index")
     
     }
@@ -32,6 +33,7 @@ module.exports.editTask =
     let { id } = req.params;
     
     let task = await Task.findById(id)
+    
     res.render("edit.ejs", { task })
 };
 
@@ -41,6 +43,7 @@ module.exports.saveEditTask =
     
     let editTask = req.body;
     let newTask = await Task.findByIdAndUpdate(id, { title: editTask.title });
+    req.flash("success", `Successfully task edited.`);
     // newTask.save()
     res.redirect("/index")
 }
@@ -50,6 +53,7 @@ module.exports.completeFunction =
     async (req, res) => {
     let { id } = req.params;
     let complete = await Task.findByIdAndUpdate(id, { completed: true });
+    req.flash("success", `Successfully you completed your personal task.`);
     // complete.save();
     res.redirect("/index")
 }
@@ -59,5 +63,6 @@ module.exports.delteTask =
     async (req, res) => {
     let { id } = req.params;
     await Task.findByIdAndDelete(id);
+    req.flash("success", `Successfully you delete your task.`);
     res.redirect("/index")
 };

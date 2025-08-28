@@ -5,9 +5,9 @@
         <div class="d-flex justify-content-center align-items-center position-relative mb-5">
             <!-- Username Left Side -->
             <div class="position-absolute start-0">
-                <p class="fw-bold mb-0" style="font-size: 1rem;">
+                <h3 class="fw-bold mb-0" style="font-size: 1rem;">
                     Hi, <%= user.username %>
-                </p>
+                </h3>
             </div>
 
             <!-- Title Center -->
@@ -33,50 +33,52 @@
                 <!-- Task List -->
                 <div class="task">
                     <div class="assign_task">
-                        Assigning Task:
+                        
                         <ol class="list-group list-group-numbered">
+                            
                             <% for (let assignTask of taskReceiver) { %>
-                                <li class="list-group-item d-flex justify-content-between align-items-center text-end">
-                                    <% if(!assignTask.completed && !assignTask.hiddenForReceiver){ %>
-    
-                                        <span class="fw-semibold">
-                                            <%= assignTask.title %>. ref by: <%= assignTask.taskGiver.username %>
-                                        </span>
-                                        <% } else { %>
-                                            <% if(!assignTask.hiddenForReceiver) {%>
+                                
+                                <% if(!assignTask.hiddenForReceiver){ %> 
+                                    <b> Assigning Task:</b>
+                                    <li
+                                        class="list-group-item d-flex justify-content-between align-items-center text-end">
+                                        <% if(!assignTask.completed){ %>
                                             <span class="fw-semibold">
-                                                <del>
-                                                    <%= assignTask.title %>
-                                                </del> ref by: <%= assignTask.taskGiver.username %>
+                                                <%= assignTask.title %>. ref by: <%= assignTask.taskGiver.username %>
                                             </span>
-                                            <% } %>
-                                            <% } %>
-
-                                                <form method="POST"
-                                                    action="/assign/<%= assignTask._id %>?_method=PATCH">
-                                                    <% if(!assignTask.completed){ %>
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-danger me-2">Incomplete</button>
-                                                        <% } else { %>
-                                                            <% if(!assignTask.hiddenForReceiver) {%>
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-success me-2">Completed</button>
-                                                               <% } %>
-                                                            <% } %>
-                                                </form>
-                                                <% if(assignTask.completed && !assignTask.hiddenForReceiver) {%>
-                                                <form method="POST"
-                                                    action="/assign/<%= assignTask._id %>?_method=DELETE">
-                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                </form>
+                                            <% } else { %>
+                                                <span class="fw-semibold">
+                                                    <del>
+                                                        <%= assignTask.title %>
+                                                    </del> ref by: <%= assignTask.taskGiver.username %>
+                                                </span>
                                                 <% } %>
 
-                                </li>
-                                <% } %>
+                                                    <form method="POST"
+                                                        action="/assign/<%= assignTask._id %>?_method=PATCH">
+                                                        <% if(!assignTask.completed){ %>
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-danger me-2">Incomplete</button>
+                                                            <% } else { %>
+                                                                <button type="submit"
+                                                                    class="btn btn-sm btn-success me-2">Completed</button>
+                                                                <% } %>
+                                                    </form>
+
+                                                    <% if(assignTask.completed){ %>
+                                                        <form method="POST"
+                                                            action="/assign/<%= assignTask._id %>?_method=DELETE">
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                        <% } %>
+                                    </li>
+                                    <% } %> <!-- ✅ Changed -->
+                                        <% } %>
                         </ol>
                     </div>
 
-                    Personal Task:
+                    <b>Personal Task:</b>
                     <ol class="list-group list-group-numbered">
                         <% for (let task of tasks) { %>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -148,7 +150,7 @@
                     </div>
 
                     <div class="delegated_task">
-                        Delegated Task:
+                        <b> Delegated Task:</b>
                         <ol class="list-group list-group-numbered">
                             <% if(delegatedTasks) { %>
                                 <% for (let delegatedTask of delegatedTasks) { %>
@@ -156,33 +158,33 @@
                                         class="list-group-item d-flex justify-content-between align-items-center text-end">
                                         <% if(!delegatedTask.completed) {%>
                                             <span class="fw-semibold">
-
-                                                <%= delegatedTask.title %>. asby: <%=delegatedTask.taskReceiver.username
-                                                        %>
+                                                <%= delegatedTask.title %>. asby:
+                                                    <%=delegatedTask.taskReceiver.username%>
                                             </span>
-                                            <% }else{ %>
+                                            <% } else { %>
                                                 <span class="fw-semibold">
-
                                                     <del>
                                                         <%= delegatedTask.title %>.
                                                     </del> asby: <%=delegatedTask.taskReceiver.username %>
                                                 </span>
                                                 <% } %>
+
                                                     <% if(!delegatedTask.completed) {%>
                                                         <form method="GET"
                                                             action="/assign/<%= delegatedTask._id %>/edit">
                                                             <button type="submit"
                                                                 class="btn btn-sm btn-warning me-2">Edit</button>
                                                         </form>
-                                                        <% } else{ %>
+                                                        <% } else { %>
                                                             <button type="submit"
                                                                 class="btn btn-sm btn-success me-2">Completed</button>
-                                                               
                                                             <% } %>
-                                                             <form method="POST" action="/assign/<%=delegatedTask._id%>/delete?_method=DELETE">
-                                                                    <button type="submit"  class="btn btn-sm btn-danger">Delete</button>
-                                                                </form>
 
+                                                                <form method="POST"
+                                                                    action="/assign/<%=delegatedTask._id%>/delete?_method=DELETE">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-danger">Delete</button>
+                                                                </form>
                                     </li>
                                     <% } %>
                                         <% } %>
