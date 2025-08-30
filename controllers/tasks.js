@@ -2,6 +2,7 @@ const Task = require("../models/tasks");
 const User = require("../models/users")
 const Assigntask = require("../models/assingtask");
 
+
 module.exports.allTasks = 
     async (req, res) => {
         let userId = req.user._id
@@ -11,6 +12,7 @@ module.exports.allTasks =
         const tasks = await Task.find({user:req.user._id});
         const delegatedTasks = await Assigntask.find({taskGiver:userId}).populate("taskReceiver", "username")
         res.render("index.ejs", {tasks, user, taskReceiver, delegatedTasks})
+        
     }
 
 

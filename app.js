@@ -67,8 +67,10 @@ app.use((req,res,next)=>{
     res.locals.curentUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error")
+    res.locals.urll = req.url;
     next()
 })
+
 
 // task router
 app.use("/index",taskRoute )

@@ -1,34 +1,17 @@
 const Assigntask = require("../models/assingtask");
 const User = require("../models/users");
-
-
-// module.exports.saveAssignTask = async(req,res)=>{
-//     let {username, title} = req.body;
-//     let curentUserId = req.user._id
-//     let curentUserIdString = curentUserId.toString();
-//     let taskReciverId = await User.findOne({ username: username }).select("_id");
-//     if(!taskReciverId){
-//         req.flash("error", "User not found")
-//     }
-//     let taskReceiverIdString = taskReciverId.toString()
-//     if(curentUserIdString === taskReceiverIdString){
-//        req.flash("error", "You can't assign your task. pleass add your personal task list")
-//     }else{
-//     let newAssignTask = new Assigntask({
-//         title: title,
-//         taskGiver: curentUserId,
-//         taskReceiver: taskReciverId
-//     });
-//     await newAssignTask.save();
-//     res.redirect("/index");}
-// }
+let {sendMail} = require("../sendMailFeature/sendMailFeature");
 
 module.exports.saveAssignTask = async (req, res) => {
     let { username, title } = req.body;
     let curentUserId = req.user._id.toString();
 
+    // curentUserInfo
+    let curentUserInfo = await User.findById(req.user._id);
+    
+
     // find user
-    let taskReceiver = await User.findOne({ username: username }).select("_id");
+    let taskReceiver = await User.findOne({ username: username });
     if (!taskReceiver) {
         req.flash("error", "User not found");
         return res.redirect("/index");
@@ -43,11 +26,21 @@ module.exports.saveAssignTask = async (req, res) => {
 
     // save task
     let newAssignTask = new Assigntask({
+        curentUsername: curentUserInfo.username,
         title: title,
         taskGiver: req.user._id,       
         taskReceiver: taskReceiver._id 
     });
     await newAssignTask.save();
+    
+    
+    // send a mail
+    await sendMail({
+        to:taskReceiver.email,
+        subject: `Completed this task. Task title is ${title}`,
+        html: `<p>Hi ${taskReceiver.username}, ${curentUserInfo.username} 
+        assigned this task to you.<br> Task taile is: ${title}</p> `
+    })
     res.redirect("/index");
 };
 
@@ -77,7 +70,6 @@ module.exports.editAssignTaskSave = async (req,res) => {
 module.exports.deleteAssigningTask = async (req,res) => {
     let {id} = req.params;
     let deleteTaskReceiverId = await Assigntask.findByIdAndUpdate(id,{hiddenForReceiver:true})
-    console.log("deleted id: "+deleteTaskReceiverId);
     req.flash("success", "your task is deleted.");
     res.redirect("/index")
     
